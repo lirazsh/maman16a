@@ -2,12 +2,12 @@ import java.io.*;
 import java.net.*;
 import java.util.HashMap;
 
-public class MenuThread extends Thread {
+public class RestThread extends Thread {
 	
 	private Socket socket;
 	private HashMap<String, String> menu;	
 	
-	public MenuThread(Socket s, HashMap<String, String> menu) {
+	public RestThread(Socket s, HashMap<String, String> menu) {
 		socket = s;
 		this.menu = menu;
 	}
@@ -32,7 +32,6 @@ public class MenuThread extends Thread {
         	if (clientAction.equals("GetMenu")) {
         		
         		
-        		//out.write(menu.toString() + "\n");
         		out.write(menu.toString());
         		out.flush();
         		
@@ -42,10 +41,10 @@ public class MenuThread extends Thread {
     			String input;
     			String order = "";
 				input = in.readLine();
-				while (in.ready()) { // changed from input != null
+				while (in.ready()) {
 					order += in.readLine();
 				}
-        		out.write("VERIFICATION_FROM_SERVER: " + order + "\n");
+        		out.write(order + "\n");
         		out.flush();
 
         	}

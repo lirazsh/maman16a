@@ -7,9 +7,11 @@ import java.util.Scanner;
 public class RestServer {
 	
 	private static HashMap<String, String> menuItems;
+	private String menuPath;
 
 	public static void main(String[] args) {
 			
+		
 		readMenuFromFile("C:\\Users\\jasminen\\Desktop\\menu.txt");
 		System.out.println(menuItems.toString());
 		
@@ -59,7 +61,7 @@ public class RestServer {
 			System.out.println("Starting server at port 3333...");
 			while (true) {
 				
-				new MenuThread(srv.accept(), menuItems).start();
+				new RestThread(srv.accept(), menuItems).start();
 			}
 			
 			

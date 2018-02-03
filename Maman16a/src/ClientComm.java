@@ -25,15 +25,16 @@ public class ClientComm {
 
             
 			System.out.println("Requesting Menu...");
+			
+			// Send requested action to server
 			out.write("GetMenu\n");
 			out.flush();
 			
+			//read menu from server in the form of a single stream
 			String menu = in.readLine();
-			//while (input != null) {
-			//	menu += input;
-			//	input = in.readLine();
-			// }
+
 			
+			// close all resources - terminate connection
 			out.close();
 			in.close();
 			socket.close();
@@ -57,19 +58,26 @@ public class ClientComm {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
             System.out.println("Requesting to send order...");
+            
+            // Send Order action to server
 			out.write("Order\n");
 			out.flush();
 			
+			// now that the server is expecting an order, send it
 			out.write(order.getInfo() + order.toString() + "\n");
 			out.flush();
 			
-			System.out.println("SERVER CONFIRMATION:");
+			
+			// receive order confirmation from the server
+			System.out.println("CONFIRMATION FROM SERVER:");
 			String output = in.readLine();
 			while (output != null) {
 				System.out.println(output);
 				output = in.readLine();
 			}
 			
+			
+			// close resources
 			out.close();
 			in.close();
 			socket.close();

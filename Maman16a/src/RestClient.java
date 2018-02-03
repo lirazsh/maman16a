@@ -19,36 +19,20 @@ public class RestClient {
 	public static void main(String[] args) {
 		
 		
-		
-		//System.out.print("Please put in the server's IP: ");
-		//Scanner sc = new Scanner(System.in);
-		//host = sc.nextLine();
-		
-		
 		try {
 			
-			/*
-			socket = new Socket(host, port);
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			Scanner sc = new Scanner(System.in);
+			System.out.print("Please put in the server's IP: ");
+			host = sc.nextLine();
+			sc.close();
 			
-			System.out.println("Requesting Menu...");
-			bw.write("GetMenu\n");
-			bw.flush();
-			//bw.close();
-			
-			//socket = new Socket(host, port);
-			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			*/
-			
-			
-			ClientComm cc = new ClientComm("127.0.0.1", 3333);
+			ClientComm cc = new ClientComm(host, port);
 			menuStr = cc.getMenu();
 			parseMenuStr();
 			
 			System.out.println("SERVER SENT MENU: " + menuStr);
 			
-			//ois.close();
-			//socket.close();
+
 						
 			// create a new frame (heavy container)
 			JFrame frame = new JFrame("Maman16a");
@@ -65,16 +49,7 @@ public class RestClient {
 			
 			
 			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-
-		
-		//sc.close();
-		
-		
+		}catch (Exception e) {e.printStackTrace();}
 		
 	}
 	

@@ -14,7 +14,7 @@ public class ClientPanel extends JPanel {
 	private JOptionPane sumOrder;
 	private JTextArea infoTxt;
 	private JComboBox<String> menuBox;
-	private JLabel price, inBasket, orderSumLbl, custInfoLbl;
+	private JLabel price, inBasket, orderSumLbl, custInfoLbl, totalPriceLbl;
 	private HashMap<String, Integer> basket;
 	private HashMap<String, String> menu;
 	private JFrame diag;
@@ -88,6 +88,7 @@ public class ClientPanel extends JPanel {
     {
         public void actionPerformed(ActionEvent e)
         {
+        	// adds rest menu item to basket
             if(e.getSource() == addItem)
             {
             	String current = menuBox.getSelectedItem().toString();
@@ -96,6 +97,7 @@ public class ClientPanel extends JPanel {
             	inBasket.setText("Basket: " + Integer.toString(newVal));
             	repaint();
             }
+            // removed item from basket
             else if (e.getSource() == removeItem)
             {
             	String current = menuBox.getSelectedItem().toString();
@@ -105,7 +107,7 @@ public class ClientPanel extends JPanel {
             	basket.put(current, newVal);
             	inBasket.setText("Basket: " + Integer.toString(newVal));
             	repaint();
-            	
+            // clear basket
             } else if (e.getSource() == clearAllItems) {
             	
             	for (String item : basket.keySet()) {
@@ -113,11 +115,14 @@ public class ClientPanel extends JPanel {
             	}
             	inBasket.setText("Basket: 0");
             	repaint();
-            	
+            
+            // if a different item is selected in GUI, update its price label
             } else if (e.getSource() == menuBox ) {
             	price.setText("Price: " + menu.get(menuBox.getSelectedItem()).toString());
             	inBasket.setText("Basket: " + Integer.toString(basket.get(menuBox.getSelectedItem())));
             	repaint();
+            	
+            // if source is the "Send" button, open a verification panel with order summary
             } else if (e.getSource() == sendList)
             {
             	diag = new JFrame();
@@ -126,14 +131,24 @@ public class ClientPanel extends JPanel {
             	diag.setSize(400,  150);
             	
             	orderSumLbl = new JLabel("Your order: \n" + basket.toString());
+            	
+            	// total price
+            	int totalPrice = 0;
+        		for (String item : basket.keySet()) {
+        			totalPrice += basket.get(item) * Integer.parseInt(menu.get(item));
+        		}
+                 	
+            	totalPriceLbl = new JLabel("Total Price: " + totalPrice);
             	submit = new JButton("Submit");
             	cancel = new JButton("Cancel");
             	custInfoLbl = new JLabel("Shipping details:");
             	infoTxt = new JTextArea("Name, Phone, Address");
+            	infoTxt.selectAll();
                 submit.addActionListener(l);
        		    cancel.addActionListener(l);
             	
        		    mypanel.add(orderSumLbl);
+       		    mypanel.add(totalPriceLbl);
             	mypanel.add(custInfoLbl);
             	mypanel.add(infoTxt);
             	mypanel.add(submit);
@@ -143,46 +158,14 @@ public class ClientPanel extends JPanel {
             	
             	diag.setVisible(true);
             	mypanel.setVisible(true);
-            	            	
+            	        
+            // if "Submit" is pressed, send info to server;
             } else if (e.getSource() == submit) {
             	
             	Order myOrder = new Order(infoTxt.getText(), basket);
             	ClientComm cm = new ClientComm(host, port);
             	
             	cm.sendOrder(myOrder);
-            	
-            	/*
-            	try {
-					Socket socket = new Socket(host, port);
-					
-					BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));					
-					bw.write("Order");
-					
-					
-					ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-					
-					
-					
-					out.writeObject(myOrder);
-					
-					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					String output = in.readLine();
-					while (output != null) {
-						System.out.println(output);
-						output = in.readLine();
-					}
-					
-					bw.close();
-					out.close();
-					in.close();
-					socket.close();
-					
-				} 
-            	catch (UnknownHostException e1) { e1.printStackTrace(); }
-				catch (IOException e1) { e1.printStackTrace(); }
-				*/
-            	
-            	
             	
             }
         }
