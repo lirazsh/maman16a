@@ -1,8 +1,0 @@
-import java.net.*;
-
-public class RestThread extends Thread {
-	public RestThread(Socket socket) {
-		
-	}
-
-}
