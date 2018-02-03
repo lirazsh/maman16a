@@ -1,0 +1,78 @@
+import java.io.*;
+import java.net.*;
+import java.util.HashMap;
+
+public class MenuThread extends Thread {
+	
+	private Socket socket;
+	private HashMap<String, String> menu;
+	private Order order;
+	
+	
+	public MenuThread(Socket s, HashMap<String, String> menu) {
+		socket = s;
+		this.menu = menu;
+	}
+	
+	public void run()
+    {
+		
+		System.out.println("Got into run...");
+		
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        
+        try {
+        	
+        	oos = new ObjectOutputStream(socket.getOutputStream());
+        	br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        	//oos = new ObjectOutputStream(socket.getOutputStream());
+        	
+        	//
+        	//
+        	
+        	System.out.println("Attempting to read line from client...");
+        	
+        	String clientAction = br.readLine();
+        	
+        	
+        	System.out.println("Client action: " + clientAction);
+        	
+        	if (clientAction.equals("GetMenu")) {
+        		
+        		
+        		oos.writeObject(menu);
+        		oos.flush();
+//        		br.close();
+//        		oos.close();
+        		
+        	} else if (clientAction.equals("Order")) {
+        		
+        		br.close();
+        		ois = new ObjectInputStream(socket.getInputStream());
+        		
+        		try {
+					order = (Order)(ois.readObject());
+				} catch (ClassNotFoundException e) { e.printStackTrace(); }
+        		
+//        		oos.close();
+        		bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        		bw.write("VERIFICATION_FROM_SERVER: " + order.toString());
+        		
+        		bw.close();
+        		ois.close();
+        	}
+        	
+    		oos.close();
+    		br.close();
+    		
+        	
+            socket.close();
+        }
+        catch(IOException e){ e.printStackTrace(); }
+    }
+
+	
+}

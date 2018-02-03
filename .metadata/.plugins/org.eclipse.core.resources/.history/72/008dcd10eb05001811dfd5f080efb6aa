@@ -1,0 +1,51 @@
+import java.io.*;
+import java.net.*;
+import java.util.HashMap;
+
+public class MenuThread extends Thread {
+	
+	private Socket socket;
+	private HashMap<String, String> menu;
+	
+	public MenuThread(Socket s, HashMap<String, String> menu) {
+		socket = s;
+		this.menu = menu;
+	}
+	
+	public void run()
+    {
+		ObjectOutputStream oos = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+        try {
+        	
+        	BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        	oos = new ObjectOutputStream(socket.getOutputStream());
+        	
+        	String clientAction = br.readLine();
+        	
+        	if (clientAction == "GetMenu") {
+        		
+        		oos.writeObject(menu);
+        		br.close();
+        		oos.close();
+        		
+        	} else if (clientAction == "Order") {
+        		
+        		br.close();
+        		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        		Order order = ois.readObject();
+        		oos.close();
+        	}
+        	
+        	
+            //out = new PrintWriter(socket.getOutputStream(), true);
+            //in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            socket.close();
+        }
+        catch(IOException e){ e.printStackTrace(); }
+    }
+
+	
+}

@@ -1,0 +1,24 @@
+import java.util.HashMap;
+
+public class Order {
+	
+	private String info;
+	private HashMap<String, Integer> order;
+	
+	public Order(String info, HashMap<String, Integer> order) {
+		this.info = info;
+		this.order = order;
+	}
+	
+	public String getInfo() {
+		return info;
+	}
+	
+	public HashMap<String, Integer> getOrder() {
+		return new HashMap<String, Integer>(order);
+	}
+	
+	public toString() {
+		
+	}
+}

@@ -1,0 +1,57 @@
+import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class RestServer {
+	
+	private static HashMap<String, String> menuItems;
+
+	public static void main(String[] args) {
+			
+		readMenuFromFile();
+		
+		ServerSocket srv = null;
+		boolean listen = true;
+		try {
+			srv = new ServerSocket(3333);
+			while (listen)
+				new RestThread(srv.accept()).start();
+			srv.close();
+			
+		} catch(IOException e){ e.printStackTrace(); }
+
+	}
+	
+	public static void readMenuFromFile() {
+		ArrayList<String> menuLines = new ArrayList<String>();
+		
+		try {
+			
+			BufferedReader br = new BufferedReader(new FileReader("C:\\menu.txt"));
+			String line = br.readLine();
+			while (line != null) {
+				menuLines.add(line);
+				line = br.readLine();
+			}
+			
+			HashMap<String, String> hm = new HashMap<String, String>();
+			
+			for (String item : menuLines) {
+				String[] record = item.split(",");
+				hm.put(record[0], record[1]);
+			}
+			
+			menuItems = hm;
+			
+			br.close();
+		} 
+		catch (FileNotFoundException e1) { e1.printStackTrace(); }
+	    catch (IOException e) { e.printStackTrace(); }
+		
+		
+		
+	}
+
+
+}

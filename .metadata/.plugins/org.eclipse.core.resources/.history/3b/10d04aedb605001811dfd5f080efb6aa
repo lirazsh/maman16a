@@ -1,0 +1,20 @@
+
+import java.net.*;
+import java.io.*;
+
+public class Run {
+
+	public static void main(String[] args) {
+		ServerSocket srv = null;
+		boolean listen = true;
+		try {
+			srv = new ServerSocket(3333);
+			while (listen)
+				new RestThread(srv.accept()).start();
+			srv.close();
+			
+		} catch(IOException e){ e.printStackTrace(); }
+
+	}
+
+}

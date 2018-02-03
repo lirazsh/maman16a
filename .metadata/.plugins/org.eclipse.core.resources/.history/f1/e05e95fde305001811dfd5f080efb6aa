@@ -1,0 +1,7 @@
+import java.util.HashMap;
+
+public class Order {
+	public Order(String info, HashMap<String, Integer> order) {
+		
+	}
+}

@@ -1,0 +1,90 @@
+import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class RestServer {
+	
+	private static HashMap<String, String> menuItems;
+
+	public static void main(String[] args) {
+			
+		readMenuFromFile("C:\\Users\\jasminen\\Desktop\\menu.txt");
+		System.out.println(menuItems.toString());
+		
+/*
+		ServerSocket srv = null;
+		boolean listen = true;
+		try {
+			srv = new ServerSocket(3333);
+			while (listen)
+				new RestThread(srv.accept()).start();
+			srv.close();
+			
+		} catch(IOException e){ e.printStackTrace(); }
+		*/
+
+	}
+	
+	public static void readMenuFromFile(String file) {
+		ArrayList<String> menuLines = new ArrayList<String>();
+		
+		try {
+			
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line = br.readLine();
+			while (line != null) {
+				menuLines.add(line);
+				line = br.readLine();
+			}
+			
+			HashMap<String, String> hm = new HashMap<String, String>();
+			
+			for (String item : menuLines) {
+				String[] record = item.split(",");
+				hm.put(record[0], record[1]);
+			}
+			
+			menuItems = hm;
+			
+			br.close();
+		} 
+		catch (FileNotFoundException e1) { e1.printStackTrace(); }
+	    catch (IOException e) { e.printStackTrace(); }
+		
+		
+		
+	}
+	
+	public static void welcomeMessage() {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Welcome customer!\n"
+				+ "Would you like to see a menu or order?\n"
+				+ "[1] Menu\n"
+				+ "[2] Order\n"
+				+ "[0] Exit");
+		int usrSel = sc.nextInt();
+		
+		// whether a valid selection was made
+		boolean continue = false; 
+		
+		switch (userSel) {
+		case 0:
+		break;
+		case 1:
+		break;
+		case 2:
+		break;
+		default:
+			System.out.println("Invalid select, please try again");
+			continue = false;
+		}
+		
+		
+	}
+
+
+}

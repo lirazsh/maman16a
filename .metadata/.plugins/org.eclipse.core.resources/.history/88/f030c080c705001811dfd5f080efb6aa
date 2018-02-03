@@ -1,0 +1,27 @@
+
+import java.net.*;
+import java.util.*;
+import java.io.*;
+
+public class RestClient {
+	
+	public static void main(String[] args) {
+		
+		Socket socket = null;
+		String host = null;
+		HashMap<String, String> menu = null;
+		
+		System.out.print("Please put in the server's IP: ");
+		Scanner sc = new Scanner(System.in);
+		host = sc.nextLine();
+		
+		try {
+			socket = new Socket(host, 3333);
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+		}
+		
+		
+		
+	}
+
+}

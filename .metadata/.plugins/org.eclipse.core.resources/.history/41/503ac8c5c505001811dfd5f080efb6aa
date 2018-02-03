@@ -1,0 +1,21 @@
+
+import java.net.*;
+import java.util.*;
+
+public class RestClient {
+	
+	public static void main(String[] args) {
+		
+		Socket socket = null;
+		String host = "localhost";
+		
+		System.out.print("Please put in the server's IP: ");
+		Scanner sc = new Scanner(System.in);
+		sc.nextLine();
+		
+		InetAddress ia = new InetAddress()
+		
+		
+	}
+
+}

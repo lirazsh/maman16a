@@ -1,0 +1,78 @@
+
+import java.net.*;
+import java.util.*;
+
+import javax.swing.JFrame;
+
+import java.io.*;
+
+public class RestClient {
+	
+	
+	public static final int FRAME_BORDER = 600;
+	
+	@SuppressWarnings("unchecked")
+	public static void main(String[] args) {
+		
+		Socket socket = null;
+		String host = null;
+		int port = 3333;
+		
+		HashMap<String, String> menu = null;
+		
+		System.out.print("Please put in the server's IP: ");
+		Scanner sc = new Scanner(System.in);
+		host = sc.nextLine();
+		
+		
+		
+		
+		try {
+			
+			// get menu
+			socket = new Socket(host, port);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			
+			System.out.println("Requesting Menu...");
+			bw.write("GetMenu");
+			bw.flush();
+			//bw.close();
+			menu = (HashMap<String, String>) ois.readObject();
+			
+			System.out.println("Menu: " + menu.toString());
+			
+			ois.close();
+			socket.close();
+			
+			System.out.println("SERVER: " + menu.toString());
+			
+			// create a new frame (heavy container)
+			JFrame frame = new JFrame("Maman16a");
+			frame.setSize(FRAME_BORDER, FRAME_BORDER);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			// create a new panel (light container)
+			ClientPanel panel = new ClientPanel(menu, host, port);
+			panel.setSize(FRAME_BORDER, FRAME_BORDER);
+			
+			frame.add(panel);
+			frame.setVisible(true);
+			panel.setVisible(true);
+			
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+
+		
+		//sc.close();
+		
+		
+		
+	}
+
+}
