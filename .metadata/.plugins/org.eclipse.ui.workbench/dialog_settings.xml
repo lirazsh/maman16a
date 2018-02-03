@@ -17,6 +17,7 @@
 		<item value="false" key="WizardFileSystemResourceExportPage1.STORE_RESOLVE_LINKED_RESOURCES_ID"/>
 		<item value="false" key="WizardFileSystemResourceExportPage1.STORE_CREATE_STRUCTURE_ID"/>
 		<list key="WizardFileSystemResourceExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="C:\Users\jasminen\Desktop\maman16\Maman16b"/>
 			<item value="C:\Users\jasminen\Desktop\maman16a"/>
 			<item value="C:\Users\jasminen\Desktop"/>
 		</list>
