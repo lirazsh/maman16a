@@ -1,0 +1,27 @@
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.net.*;
+
+
+public class ClientComm {
+	
+	private String host; 
+	private int port;
+	
+	public ClientComm(String host, int port) {
+		
+		this.host = host;
+		this.port = port;
+		
+	}
+	
+	public String getMenu() {
+		
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		
+		System.out.println("Requesting Menu...");
+		bw.write("GetMenu\n");
+		bw.flush();
+	}
+
+}

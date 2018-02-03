@@ -10,26 +10,24 @@ public class RestClient {
 	
 	
 	public static final int FRAME_BORDER = 600;
+	private static Socket socket = null;
+	private static String host = null;
+	private static int port = 3333;
+	private static HashMap<String, String> menu = null;
+	private static String menuStr = null;
 	
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		
-		Socket socket = null;
-		String host = null;
-		int port = 3333;
-		
-		HashMap<String, String> menu = null;
-		
-		System.out.print("Please put in the server's IP: ");
-		Scanner sc = new Scanner(System.in);
-		host = sc.nextLine();
 		
 		
+		//System.out.print("Please put in the server's IP: ");
+		//Scanner sc = new Scanner(System.in);
+		//host = sc.nextLine();
 		
 		
 		try {
 			
-			// get menu
+			/*
 			socket = new Socket(host, port);
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			
@@ -40,16 +38,18 @@ public class RestClient {
 			
 			//socket = new Socket(host, port);
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			*/
 			
-			menu = (HashMap<String, String>) ois.readObject();
 			
-			System.out.println("Menu: " + menu.toString());
+			ClientComm cc = new ClientComm("127.0.0.1", 3333);
+			menuStr = cc.getMenu();
+			parseMenuStr();
 			
-			ois.close();
-			socket.close();
+			System.out.println("SERVER SENT MENU: " + menuStr);
 			
-			System.out.println("SERVER: " + menu.toString());
-			
+			//ois.close();
+			//socket.close();
+						
 			// create a new frame (heavy container)
 			JFrame frame = new JFrame("Maman16a");
 			frame.setSize(FRAME_BORDER, FRAME_BORDER);
@@ -76,6 +76,18 @@ public class RestClient {
 		
 		
 		
+	}
+	
+	private static void parseMenuStr() {
+		HashMap<String, String> hm = new HashMap<String, String>();
+		String tmp = menuStr.substring(1, menuStr.length()-1);
+				
+		for (String str : tmp.split(",")) {
+			String[] record = str.split("=");
+			hm.put(record[0].trim(), record[1].trim());
+		}
+		
+		menu = hm;
 	}
 
 }

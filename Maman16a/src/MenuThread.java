@@ -5,9 +5,7 @@ import java.util.HashMap;
 public class MenuThread extends Thread {
 	
 	private Socket socket;
-	private HashMap<String, String> menu;
-	private Order order;
-	
+	private HashMap<String, String> menu;	
 	
 	public MenuThread(Socket s, HashMap<String, String> menu) {
 		socket = s;
@@ -17,25 +15,16 @@ public class MenuThread extends Thread {
 	public void run()
     {
 		
-		System.out.println("Got into run...");
-		
-		ObjectOutputStream oos = null;
-		ObjectInputStream ois = null;
-        BufferedReader br = null;
-        BufferedWriter bw = null;
+		System.out.println("Server thread running...");
         
         try {
         	
-        	oos = new ObjectOutputStream(socket.getOutputStream());
-        	br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        	//oos = new ObjectOutputStream(socket.getOutputStream());
+        	BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        	System.out.println("Attempting to read command from client...");
         	
-        	//
-        	//
-        	
-        	System.out.println("Attempting to read line from client...");
-        	
-        	String clientAction = br.readLine();
+        	String clientAction = in.readLine();
         	
         	
         	System.out.println("Client action: " + clientAction);
@@ -43,33 +32,29 @@ public class MenuThread extends Thread {
         	if (clientAction.equals("GetMenu")) {
         		
         		
-        		oos.writeObject(menu);
-        		oos.flush();
-//        		br.close();
-//        		oos.close();
+        		//out.write(menu.toString() + "\n");
+        		out.write(menu.toString());
+        		out.flush();
+        		
         		
         	} else if (clientAction.equals("Order")) {
         		
-      //  		br.close();
-        		ois = new ObjectInputStream(socket.getInputStream());
-        		
-        		try {
-					order = (Order)(ois.readObject());
-				} catch (ClassNotFoundException e) { e.printStackTrace(); }
-        		
-//        		oos.close();
-        		bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        		bw.write("VERIFICATION_FROM_SERVER: " + order.toString());
-        		
-        		bw.close();
-        		ois.close();
+    			String input;
+    			String order = "";
+				input = in.readLine();
+				while (in.ready()) { // changed from input != null
+					order += in.readLine();
+				}
+        		out.write("VERIFICATION_FROM_SERVER: " + order + "\n");
+        		out.flush();
+
         	}
         	
-    		oos.close();
-    		br.close();
-    		
         	
-            socket.close();
+        	// closing resources
+        	out.close();
+    		in.close();
+    		socket.close();
         }
         catch(IOException e){ e.printStackTrace(); }
     }

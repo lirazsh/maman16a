@@ -147,7 +147,11 @@ public class ClientPanel extends JPanel {
             } else if (e.getSource() == submit) {
             	
             	Order myOrder = new Order(infoTxt.getText(), basket);
+            	ClientComm cm = new ClientComm(host, port);
             	
+            	cm.sendOrder(myOrder);
+            	
+            	/*
             	try {
 					Socket socket = new Socket(host, port);
 					
@@ -176,6 +180,9 @@ public class ClientPanel extends JPanel {
 				} 
             	catch (UnknownHostException e1) { e1.printStackTrace(); }
 				catch (IOException e1) { e1.printStackTrace(); }
+				*/
+            	
+            	
             	
             }
         }
